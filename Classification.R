@@ -1,32 +1,29 @@
+## Change this to fix your working cirection
+setwd('/Users/jal/Desktop/IS804FinalProject')
+
+playerStats <- read.csv(file = 'NBAPlayerStats.csv', na.strings = "?", stringsAsFactors = T)
+head(playerStats)
+
 #Classification
 
 # Logistic Regression
 ?glm
-glm.fit=glm(Age~Tm+G+GS+MP+FG+FGA,data=playerStats,family=binomial)
+glm.fit=glm(MVP~Tm+G+GS+MP+FG+FGA,data=playerStats,family=binomial)
 summary(glm.fit)
 coef(glm.fit)
 summary(glm.fit)$coef
 summary(glm.fit)$coef[,4]
-#predictions are of log-odds scale
 glm.pred=predict(glm.fit)
 summary(glm.pred)
-#predictions are predicted probabilities
 glm.probs=predict(glm.fit,type="response")
 summary(glm.probs)
 glm.probs[1:10]
-#contrasts(Direction)
-# initialize the vector to all "Down"
 glm.pred=rep("Down",1250)
-# update the vector based on glm.probs
 glm.pred[glm.probs>.5]="Up"
 glm.pred
-#build a contingency table
-#table(glm.pred,Direction)
-# two ways to compute accuracy
-(507+145)/1250
-#mean(glm.pred==Direction)
-#split the data into train and test sets
 
+
+# Now splitting the data into training and test sets
 #train=(Year<2005)
 #train
 #Smarket.2005=Smarket[!train,]
