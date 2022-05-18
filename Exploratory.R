@@ -1,4 +1,7 @@
-playerStats <- read.csv(file = './NBAPlayerStats.csv', na.strings = "?", stringsAsFactors = T)
+## Change this to fix your working cirection
+setwd('/Users/jal/Desktop/IS804FinalProject')
+
+playerStats <- read.csv(file = 'NBAPlayerStats.csv', na.strings = "?", stringsAsFactors = T)
 head(playerStats)
 
 View(playerStats)
