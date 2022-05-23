@@ -1,54 +1,56 @@
 
 # Lab: Non-linear Modeling
 
+setwd('/Users/jal/Desktop/IS804FinalProject')
+
+playerStats <- read.csv(file = 'NBAPlayerStats.csv', na.strings = "?", stringsAsFactors = T)
+head(playerStats)
+
 ###
 library(ISLR)
-attach(Wage)
 
 # Get min/max values of age using the range() function
 
-agelims = range (age)
+agelims = range(playerStats$Age)
 
 # Generate a sequence of age values spanning the range
-age.grid = seq(from = min(agelims), to = max(agelims))
-age.grid
+playerStats$Age.grid = seq(from = min(agelims), to = max(agelims))
+playerStats$Age.grid
 
 ## Splines
 
 ###
 library(splines)
-### bs: fit a polynomial spline, default degree is 3
-fit <- lm(wage ~ bs(age, knots = c(25, 40, 60)), data = Wage)
-pred <- predict(fit, newdata = list(age = age.grid), se = T)
-plot(age, wage, col = "gray")
-lines(age.grid, pred$fit, lwd = 2)
-lines(age.grid, pred$fit + 2 * pred$se, lty = "dashed")
-lines(age.grid, pred$fit - 2 * pred$se, lty = "dashed")
+fit <- lm(FGA ~ bs(playerStats$Age, knots = c(25, 40, 60)), data = FGA)
+pred <- predict(fit, newdata = list(playerStats$Age = playerStats$Age.grid), se = T)
+plot(playerStats$Age, FGA, col = "gray")
+lines(playerStats$Age.grid, pred$fit, lwd = 2)
+lines(playerStats$Age.grid, pred$fit + 2 * pred$se, lty = "dashed")
+lines(playerStats$Age.grid, pred$fit - 2 * pred$se, lty = "dashed")
 
-### ns: natural cubic splines
-fit2 <- lm(wage ~ ns(age, df = 4), data = Wage)
-pred2 <- predict(fit2, newdata = list(age = age.grid),
+### natural cubic splines
+fit2 <- lm(FGA ~ ns(playerStats$Age, df = 4), data = playerStats)
+pred2 <- predict(fit2, newdata = list(playerStats$Age = playerStats$Age.grid),
                  se = T)
-lines(age.grid, pred2$fit, col = "red", lwd = 2)
+lines(playerStats$Age.grid, pred2$fit, col = "red", lwd = 2)
 ### Smoothing spline
-plot(age, wage, xlim = agelims, cex = .5, col = "darkgrey")
+plot(playerStats$Age, FGA, xlim = agelims, cex = .5, col = "darkgrey")
 title("Smoothing Spline")
-fit <- smooth.spline(age, wage, df = 16)
-fit2 <- smooth.spline(age, wage, cv = TRUE)
+fit <- smooth.spline(playerStats$Age, FGA, df = 16)
+fit2 <- smooth.spline(playerStats$Age, FGA, cv = TRUE)
 fit2$df
 lines(fit, col = "red", lwd = 2)
 lines(fit2, col = "blue", lwd = 2)
 legend("topright", legend = c("16 DF", "6.8 DF"),
        col = c("red", "blue"), lty = 1, lwd = 2, cex = .8)
 ### Local regression
-plot(age, wage, xlim = agelims, cex = .5, col = "darkgrey")
+plot(playerStats$Age, FGA, xlim = FGA, cex = .5, col = "darkgrey")
 title("Local Regression")
-# loess: local regression, span controls the degree of smoothing
-fit <- loess(wage ~ age, span = .2, data = Wage)
-fit2 <- loess(wage ~ age, span = .5, data = Wage)
-lines(age.grid, predict(fit, data.frame(age = age.grid)),
+fit <- loess(FGA ~ Age, span = .2, data = Age)
+fit2 <- loess(FGA ~ Age, span = .5, data = Age)
+lines(FGA.grid, predict(fit, data.frame(FGA = FGA.grid)),
       col = "red", lwd = 2)
-lines(age.grid, predict(fit2, data.frame(age = age.grid)),
+lines(FGA.grid, predict(fit2, data.frame(FGA = FGA.grid)),
       col = "blue", lwd = 2)
 legend("topright", legend = c("Span = 0.2", "Span = 0.5"),
        col = c("red", "blue"), lty = 1, lwd = 2, cex = .8)

@@ -8,7 +8,7 @@ head(playerStats)
 
 # Logistic Regression
 ?glm
-glm.fit=glm(MVP~Tm+G+GS+MP+FG+FGA,data=playerStats,family=binomial)
+glm.fit=glm(MVP~G+GS+MP+FG+FGA+FGP+3P+3PA+3PP+2P+2PA+2PP+eFGP+FG+FTA+FTP,data=playerStats,family=binomial)
 summary(glm.fit)
 coef(glm.fit)
 summary(glm.fit)$coef
@@ -30,7 +30,6 @@ playerStats=playerStats[!train,]
 playerStats.30
 dim(playerStats.30)
 playerStats.30.30=playerStats.30[!train]
-#Direction.2005
 glm.fit=glm(MVP~G+GS+MP+FG+FGA+FGP+3P+3PA+3PP+2P+2PA+2PP+eFGP+FG+FTA+FTP,data=playerStats,family=binomial,subset=train)
 glm.probs=predict(glm.fit,playerStats.30,type="response")
 glm.pred=rep("Down",252)

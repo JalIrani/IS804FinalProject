@@ -1,8 +1,12 @@
-# Chapter 6 Lab 2: Ridge Regression and the Lasso
-library(ISLR)
-Hitters=na.omit(Hitters)
-x=model.matrix(Salary~.-1,data=Hitters)
-y=Hitters$Salary
+## Change this to fix your working cirection
+setwd('/Users/jal/Desktop/IS804FinalProject')
+
+playerStats <- read.csv(file = 'NBAPlayerStats.csv', na.strings = "?", stringsAsFactors = T)
+head(playerStats)
+
+playerStats=na.omit(playerStats)
+x=model.matrix(Salary~.-1,data=playerStats)
+y=playerStats$FGA
 train=sample(1:nrow(x), nrow(x)/2)
 
 # Ridge Regression
@@ -19,6 +23,7 @@ plot(cv.ridge)
 
 
 # The Lasso, default alpha=1
+
 fit.lasso=glmnet(x,y)
 plot(fit.lasso, xvar="lambda", label=TRUE)
 cv.lasso=cv.glmnet(x,y)

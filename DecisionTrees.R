@@ -53,24 +53,26 @@ table(tree.pred, High.test)
 ## Fitting Regression Trees
 
 ### build a tree to predict medium house value medv
+
 set.seed(1)
-train <- sample(1:nrow(Boston), nrow(Boston) / 2)
-tree.boston <- tree(medv ~ ., Boston, subset = train)
-summary(tree.boston)
-###
-plot(tree.boston)
-text(tree.boston, pretty = 0)
-###
-cv.boston <- cv.tree(tree.boston)
-plot(cv.boston$size, cv.boston$dev, type = "b")
-###
-prune.boston <- prune.tree(tree.boston, best = 6)
-plot(prune.boston)
-text(prune.boston, pretty = 0)
-###
-yhat <- predict(tree.boston, newdata = Boston[-train, ])
-boston.test <- Boston[-train, "medv"]
-plot(yhat, boston.test)
+train <- sample(1:nrow(playerStats), nrow(playerStats) / 2)
+playerStats <- tree(MVP ~ ., playerStats, subset = train)
+summary(tree.playerStats)
+
+plot(tree.playerStats)
+text(tree.playerStats, pretty = 0)
+
+cv.playerStats <- cv.tree(tree.playerStats)
+plot(cv.playerStats$size, cv.playerStats$dev, type = "b")
+
+prune.playerStats <- prune.tree(tree.playerStats, best = 6)
+plot(prune.playerStats)
+text(prune.playerStats, pretty = 0)
+
+yhat <- predict(tree.playerStats, newdata = playerStats[-train, ])
+playerStats.test <- playerStats[-train, "MVP"]
+plot(yhat, playerStats.test)
 abline(0, 1)
-mean((yhat - boston.test)^2)
+mean((yhat - playerStats.test)^2)
+
 
